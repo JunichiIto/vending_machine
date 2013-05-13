@@ -1,5 +1,5 @@
 class VendingMachine
   def say
-    "hello"
+    "hello!"
   end
 end
