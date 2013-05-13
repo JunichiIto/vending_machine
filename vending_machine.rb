@@ -1,3 +1,5 @@
+require './drink'
+
 class VendingMachine
   VALID_MONEY = [10, 50, 100, 500, 1000]
   attr_reader :total_amount
@@ -16,5 +18,9 @@ class VendingMachine
     change = @total_amount
     @total_amount = 0
     change
+  end
+
+  def drinks
+    Array.new(5, Drink.new(120, 'cola'))
   end
 end

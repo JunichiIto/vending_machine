@@ -76,5 +76,13 @@ describe VendingMachine do
         expect(machine.total_amount).to eq 0
       end
     end
+    describe '#drinks' do
+      it 'has 5 drinks by default' do
+        expect(machine.drinks).to have(5).items
+      end
+      it 'has 5 cola-s' do
+        expect(machine.drinks.select{|d| d.name == "cola"}).to have(5).items
+      end
+    end
   end
 end
