@@ -2,10 +2,12 @@ require './drink'
 
 class VendingMachine
   VALID_MONEY = [10, 50, 100, 500, 1000]
-  attr_reader :total_amount
+  attr_reader :total_amount, :drinks, :sale
 
   def initialize
     @total_amount = 0
+    @drinks = Array.new(5, Drink.new(120, 'cola'))
+    @sale = 0
   end
 
   def insert_money amount
@@ -20,7 +22,16 @@ class VendingMachine
     change
   end
 
-  def drinks
-    Array.new(5, Drink.new(120, 'cola'))
+  def buy
+    if can_buy?
+      drink = @drinks.pop
+      @sale += drink.price
+      @total_amount -= drink.price
+      drink
+    end
+  end
+
+  def can_buy?
+    total_amount >= 120 and @drinks.any?
   end
 end
