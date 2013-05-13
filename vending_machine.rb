@@ -1,4 +1,5 @@
 class VendingMachine
+  VALID_MONEY = [10, 50, 100, 500, 1000]
   attr_reader :total_amount
 
   def initialize
@@ -6,8 +7,9 @@ class VendingMachine
   end
 
   def insert_money amount
+    return amount unless VALID_MONEY.include? amount
     @total_amount += amount
-    amount
+    nil
   end
 
   def change
