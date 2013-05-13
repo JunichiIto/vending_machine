@@ -6,7 +6,7 @@ class VendingMachine
 
   def initialize
     @total_amount = 0
-    @drinks = Array.new(5, Drink.new(120, 'cola'))
+    @drinks = Array.new(5, Drink.cola)
     @sale = 0
   end
 

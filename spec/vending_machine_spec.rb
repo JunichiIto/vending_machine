@@ -87,7 +87,7 @@ describe VendingMachine do
       expect(machine.drinks).to have(5).items
     end
     it 'has 5 cola-s' do
-      expect(machine.drinks.select{|d| d.name == "cola"}).to have(5).items
+      expect(machine.drinks.count(Drink.cola)).to eq 5
     end
   end
   describe '#can_buy?' do
@@ -129,7 +129,7 @@ describe VendingMachine do
         machine.insert_money 100
       end
       it 'can buy' do
-        expect(machine.buy.name).to eq 'cola'
+        expect(machine.buy).to eq Drink.cola
       end
       it 'reduces drinks' do
         machine.buy
@@ -196,5 +196,8 @@ describe VendingMachine do
       end
       specify { expect(machine.sale).to eq 240 }
     end
+  end
+  describe '#add_drink' do
+
   end
 end
