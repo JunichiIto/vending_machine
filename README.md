@@ -25,7 +25,7 @@ $ irb
 > machine.insert_money 10
 > machine.insert_money 100
 > machine.buy :cola
-=> [name: cola, price: 120, 0]
+=> [<Drink: name=cola, price=120>, 0]
 > machine.total_money
 => 0
 > machine.add_drink Drink.redbull # price: 200
@@ -34,7 +34,7 @@ $ irb
 > machine.available_drink_names
 => [:cola, :redbull, :water]
 > machine.buy :redbull
-=> [name: redbull, price: 200, 800]
+=> [<Drink: name=redbull, price=200>, 800]
 > machine.sale
 => 320
 > machine.insert_money 100

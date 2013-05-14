@@ -31,6 +31,6 @@ class Drink
   end
 
   def to_s
-    "name: #{name}, price: #{price}"
+    "<Drink: name=#{name}, price=#{price}>"
   end
 end
