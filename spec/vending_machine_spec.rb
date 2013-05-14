@@ -28,38 +28,38 @@ describe VendingMachine do
         it 'returns money' do
           expect(machine.insert_money(1)).to eq 1
         end
-        it 'does not increment total amount' do
+        it 'does not increment total money' do
           machine.insert_money 1
-          expect(machine.total_amount).to eq 0
+          expect(machine.total_money).to eq 0
         end
       end
       context '5 yen' do
         it 'returns money' do
           expect(machine.insert_money(5)).to eq 5
         end
-        it 'does not increment total amount' do
+        it 'does not increment total money' do
           machine.insert_money 5
-          expect(machine.total_amount).to eq 0
+          expect(machine.total_money).to eq 0
         end
       end
       context '5000 yen' do
         it 'returns money' do
           expect(machine.insert_money(5000)).to eq 5000
         end
-        it 'does not increment total amount' do
+        it 'does not increment total money' do
           machine.insert_money 5000
-          expect(machine.total_amount).to eq 0
+          expect(machine.total_money).to eq 0
         end
       end
     end
   end
-  describe '#total_amount' do
+  describe '#total_money' do
     context 'more than once' do
       before do
         machine.insert_money 10
         machine.insert_money 50
       end
-      specify { expect(machine.total_amount).to eq 60 }
+      specify { expect(machine.total_money).to eq 60 }
     end
   end
   describe '#change' do
@@ -72,7 +72,7 @@ describe VendingMachine do
     end
     it 'has no money' do
       machine.change
-      expect(machine.total_amount).to eq 0
+      expect(machine.total_money).to eq 0
     end
     context 'after buy' do
       before do
@@ -184,7 +184,7 @@ describe VendingMachine do
         expect(machine.buy :cola).to eq [Drink.cola, 500 - 120]
       end
       it 'has no money after buy' do
-        expect{machine.buy :cola}.to change{machine.total_amount}.from(500).to(0)
+        expect{machine.buy :cola}.to change{machine.total_money}.from(500).to(0)
       end
     end
   end
