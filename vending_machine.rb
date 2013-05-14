@@ -22,17 +22,19 @@ class VendingMachine
     change
   end
 
-  def buy(drink)
-    if can_buy? drink
-      drink = @drinks.delete_at(@drinks.index(drink))
+  def buy(drink_name)
+    if can_buy? drink_name
+      drink = @drinks.delete_at(@drinks.index{|d| d.name == drink_name})
       @sale += drink.price
       @total_amount -= drink.price
       [drink, change]
     end
   end
 
-  def can_buy?(drink)
-    total_amount >= drink.price and @drinks.any?{|d| d == drink}
+  def can_buy?(drink_name)
+    if drink = @drinks.find{|d| d.name == drink_name}
+      total_amount >= drink.price
+    end
   end
 
   def add_drink(drink)
