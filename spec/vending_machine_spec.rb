@@ -213,7 +213,8 @@ describe VendingMachine do
   describe '#add_drink' do
     it 'can add drink' do
       machine.add_drink Drink.redbull
-      expect(machine.drinks.count(Drink.redbull)).to eq 1
+      machine.add_drink Drink.redbull
+      expect(machine.drinks.count(Drink.redbull)).to eq 2
     end
   end
   describe '#available_drinks' do
