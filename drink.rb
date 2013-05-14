@@ -22,6 +22,14 @@ class Drink
     self.name == another.name
   end
 
+  def eql?(another)
+    self == another
+  end
+
+  def hash
+    name.hash
+  end
+
   def to_s
     "name: #{name}, price: #{price}"
   end

@@ -231,22 +231,22 @@ describe VendingMachine do
         machine.insert_money 100
       end
       it 'can buy all items' do
-        expect(machine.available_drinks).to have(15).items
+        expect(machine.available_drinks).to have(3).items
       end
-      it 'can buy all cola-s' do
-        expect(machine.available_drinks.count(Drink.cola)).to eq 5
+      it 'can buy cola-s' do
+        expect(machine.available_drinks.include?(Drink.cola)).to be_true
       end
       it 'can buy cola' do
         expect(machine.can_buy? :cola).to be_true
       end
-      it 'can buy all redbulls' do
-        expect(machine.available_drinks.count(Drink.redbull)).to eq 5
+      it 'can buy redbulls' do
+        expect(machine.available_drinks.include?(Drink.redbull)).to be_true
       end
       it 'can buy redbull' do
         expect(machine.can_buy? :redbull).to be_true
       end
-      it 'can buy all water-s' do
-        expect(machine.available_drinks.count(Drink.water)).to eq 5
+      it 'can buy water-s' do
+        expect(machine.available_drinks.include?(Drink.water)).to be_true
       end
       it 'can buy water' do
         expect(machine.can_buy? :water).to be_true
@@ -257,22 +257,22 @@ describe VendingMachine do
         19.times { machine.insert_money 10 }
       end
       it 'can buy all items except for redbull' do
-        expect(machine.available_drinks).to have(10).items
+        expect(machine.available_drinks).to have(2).items
       end
-      it 'can buy all cola-s' do
-        expect(machine.available_drinks.count(Drink.cola)).to eq 5
+      it 'can buy cola-s' do
+        expect(machine.available_drinks.include?(Drink.cola)).to be_true
       end
       it 'can buy cola' do
         expect(machine.can_buy? :cola).to be_true
       end
       it 'cannot buy redbull' do
-        expect(machine.available_drinks.count(Drink.redbull)).to eq 0
+        expect(machine.available_drinks.include?(Drink.redbull)).to be_false
       end
       it 'cannot buy redull' do
         expect(machine.can_buy? :redbull).to be_false
       end
-      it 'can buy all water-s' do
-        expect(machine.available_drinks.count(Drink.water)).to eq 5
+      it 'can buy water-s' do
+        expect(machine.available_drinks.include?(Drink.water)).to be_true
       end
       it 'can buy water' do
         expect(machine.can_buy? :water).to be_true
@@ -286,15 +286,21 @@ describe VendingMachine do
           end
           machine.buy :cola
         end
-        12.times do
+        20.times do
           machine.insert_money 10
         end
       end
-      it 'can buy water only' do
-        expect(machine.available_drinks).to have(5).items
+      it 'can buy water and redbull' do
+        expect(machine.available_drinks).to have(2).items
       end
-      it 'can buy all water-s' do
-        expect(machine.available_drinks.count(Drink.water)).to eq 5
+      it 'can buy redbulls' do
+        expect(machine.available_drinks.include?(Drink.redbull)).to be_true
+      end
+      it 'can buy water-s' do
+        expect(machine.available_drinks.include?(Drink.water)).to be_true
+      end
+      it 'cannot buy cola-s' do
+        expect(machine.available_drinks.include?(Drink.cola)).to be_false
       end
       it 'can buy water' do
         expect(machine.can_buy? :water).to be_true
@@ -302,8 +308,8 @@ describe VendingMachine do
       it 'cannot buy cola' do
         expect(machine.can_buy? :cola).to be_false
       end
-      it 'cannot buy redbull' do
-        expect(machine.can_buy? :redbull).to be_false
+      it 'can buy redbull' do
+        expect(machine.can_buy? :redbull).to be_true
       end
     end
   end

@@ -32,9 +32,7 @@ class VendingMachine
   end
 
   def can_buy?(drink_name)
-    if drink = @drinks.find{|d| d.name == drink_name}
-      total_amount >= drink.price
-    end
+    available_drinks.any?{|d| d.name == drink_name}
   end
 
   def add_drink(drink)
@@ -42,6 +40,6 @@ class VendingMachine
   end
 
   def available_drinks
-    drinks.select{|d| d.price <= total_amount}
+    drinks.select{|d| d.price <= total_amount}.uniq
   end
 end
