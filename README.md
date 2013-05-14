@@ -5,8 +5,9 @@ Sample implementation for http://devtesting.jp/tddbc/?TDDBC%E5%A4%A7%E9%98%AA2.0
 ### How to use
 
 ````
-> require './drink'
-> require './vending_machine'
+$ irb
+> require './lib/drink'
+> require './lib/vending_machine'
 > machine = VendingMachine.new # has 5 cola-s by default, price: 120
 > machine.insert_money 10
 => nil
