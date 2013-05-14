@@ -1,5 +1,5 @@
 require 'rspec'
-require './vending_machine'
+require './lib/vending_machine'
 
 describe VendingMachine do
   let(:machine) { VendingMachine.new }

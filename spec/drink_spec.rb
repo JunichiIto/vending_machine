@@ -1,5 +1,5 @@
 require 'rspec'
-require './drink'
+require './lib/drink'
 
 describe Drink do
   describe "==" do

@@ -1,4 +1,4 @@
-require './drink'
+require './lib/drink'
 
 class VendingMachine
   VALID_MONEY = [10, 50, 100, 500, 1000]
