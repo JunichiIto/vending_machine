@@ -79,7 +79,9 @@ describe VendingMachine do
         machine.insert_money 100
         machine.buy Drink.cola
       end
-      specify { expect(machine.change).to eq (10 + 50 + 100 - 120) }
+      it 'has no change' do
+        expect(machine.change).to eq 0
+      end
     end
   end
   describe '#drinks' do
@@ -129,14 +131,14 @@ describe VendingMachine do
         machine.insert_money 100
       end
       it 'can buy' do
-        expect(machine.buy Drink.cola).to eq Drink.cola
+        expect(machine.buy Drink.cola).to eq [Drink.cola, 0]
       end
       it 'reduces drinks' do
         machine.buy Drink.cola
         expect(machine.drinks).to have(4).items
       end
     end
-    context 'when money is not emough' do
+    context 'when money is not enough' do
       before do
         machine.insert_money 10
         machine.insert_money 100
@@ -172,6 +174,17 @@ describe VendingMachine do
       it 'returns inserted money' do
         machine.buy Drink.cola
         expect(machine.change).to eq 120
+      end
+    end
+    context 'when money exceeds price' do
+      before do
+        machine.insert_money 500
+      end
+      it 'returns drink and change' do
+        expect(machine.buy Drink.cola).to eq [Drink.cola, 500 - 120]
+      end
+      it 'has no money after buy' do
+        expect{machine.buy Drink.cola}.to change{machine.total_amount}.from(500).to(0)
       end
     end
   end

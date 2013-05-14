@@ -27,7 +27,7 @@ class VendingMachine
       drink = @drinks.delete_at(@drinks.index(drink))
       @sale += drink.price
       @total_amount -= drink.price
-      drink
+      [drink, change]
     end
   end
 
