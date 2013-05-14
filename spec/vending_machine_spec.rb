@@ -97,14 +97,14 @@ describe VendingMachine do
         machine.insert_money 10
         machine.insert_money 100
       end
-      specify{ expect(machine.can_buy?).to be_true }
+      specify{ expect(machine.can_buy? Drink.cola).to be_true }
     end
     context 'when money is not emough' do
       before do
         machine.insert_money 10
         machine.insert_money 100
       end
-      specify{ expect(machine.can_buy?).to be_false }
+      specify{ expect(machine.can_buy? Drink.cola).to be_false }
     end
     context 'when no cola' do
       before do
@@ -118,7 +118,7 @@ describe VendingMachine do
         machine.insert_money 10
         machine.insert_money 100
       end
-      specify{ expect(machine.can_buy?).to be_false }
+      specify{ expect(machine.can_buy? Drink.cola).to be_false }
     end
   end
   describe '#buy' do
@@ -223,11 +223,20 @@ describe VendingMachine do
       it 'can buy all cola-s' do
         expect(machine.available_drinks.count(Drink.cola)).to eq 5
       end
+      it 'can buy cola' do
+        expect(machine.can_buy? Drink.cola).to be_true
+      end
       it 'can buy all redbulls' do
         expect(machine.available_drinks.count(Drink.redbull)).to eq 5
       end
+      it 'can buy redbull' do
+        expect(machine.can_buy? Drink.redbull).to be_true
+      end
       it 'can buy all water-s' do
         expect(machine.available_drinks.count(Drink.water)).to eq 5
+      end
+      it 'can buy water' do
+        expect(machine.can_buy? Drink.water).to be_true
       end
     end
     context 'when insert 190yen' do
@@ -240,11 +249,20 @@ describe VendingMachine do
       it 'can buy all cola-s' do
         expect(machine.available_drinks.count(Drink.cola)).to eq 5
       end
-      it 'can buy all redbulls' do
+      it 'can buy cola' do
+        expect(machine.can_buy? Drink.cola).to be_true
+      end
+      it 'cannot buy redbull' do
         expect(machine.available_drinks.count(Drink.redbull)).to eq 0
+      end
+      it 'cannot buy redull' do
+        expect(machine.can_buy? Drink.redbull).to be_false
       end
       it 'can buy all water-s' do
         expect(machine.available_drinks.count(Drink.water)).to eq 5
+      end
+      it 'can buy water' do
+        expect(machine.can_buy? Drink.water).to be_true
       end
     end
     context 'when no cola' do
@@ -264,6 +282,15 @@ describe VendingMachine do
       end
       it 'can buy all water-s' do
         expect(machine.available_drinks.count(Drink.water)).to eq 5
+      end
+      it 'can buy water' do
+        expect(machine.can_buy? Drink.water).to be_true
+      end
+      it 'cannot buy cola' do
+        expect(machine.can_buy? Drink.cola).to be_false
+      end
+      it 'cannot buy redbull' do
+        expect(machine.can_buy? Drink.redbull).to be_false
       end
     end
   end
