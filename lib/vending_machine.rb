@@ -32,14 +32,14 @@ class VendingMachine
   end
 
   def can_buy?(drink_name)
-    available_drinks.any?{|d| d.name == drink_name}
+    available_drink_names.include? drink_name
   end
 
   def add_drink(drink)
     @drinks << drink
   end
 
-  def available_drinks
-    drinks.select{|d| d.price <= total_money}.uniq
+  def available_drink_names
+    drinks.uniq.select{|d| d.price <= total_money}.map(&:name)
   end
 end
