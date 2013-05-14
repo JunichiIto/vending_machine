@@ -18,11 +18,15 @@ Sample implementation for http://devtesting.jp/tddbc/?TDDBC%E5%A4%A7%E9%98%AA2.0
 => 110
 > machine.change
 => 110
+> machine.total_money
+=> 0
 > machine.insert_money 10
 > machine.insert_money 10
 > machine.insert_money 100
 > machine.buy :cola
 => [name: cola, price: 120, 0]
+> machine.total_money
+=> 0
 > machine.add_drink Drink.redbull # price: 200
 > machine.add_drink Drink.water # price: 100
 > machine.insert_money 1000
