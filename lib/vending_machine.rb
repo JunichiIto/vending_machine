@@ -17,14 +17,14 @@ class VendingMachine
   end
 
   def change
-    change = @total_money
+    change = total_money
     @total_money = 0
     change
   end
 
   def buy(drink_name)
     if can_buy? drink_name
-      drink = @drinks.delete_at(@drinks.index{|d| d.name == drink_name})
+      drink = pop_drink drink_name
       @sale += drink.price
       @total_money -= drink.price
       [drink, change]
@@ -36,10 +36,16 @@ class VendingMachine
   end
 
   def add_drink(drink)
-    @drinks << drink
+    drinks << drink
   end
 
   def available_drink_names
-    drinks.uniq.select{|d| d.price <= total_money}.map(&:name)
+    drinks.uniq.select{|d| d.price <= total_money }.map(&:name)
+  end
+
+  private
+
+  def pop_drink name
+    drinks.delete_at(drinks.index{|d| d.name == name })
   end
 end
