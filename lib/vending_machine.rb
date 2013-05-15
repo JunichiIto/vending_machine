@@ -1,7 +1,7 @@
 require './lib/drink'
 
 class VendingMachine
-  VALID_MONEY = [10, 50, 100, 500, 1000]
+  AVAILABLE_MONEY = [10, 50, 100, 500, 1000]
   attr_reader :total, :sale_amount
 
   def initialize
@@ -11,7 +11,7 @@ class VendingMachine
   end
 
   def insert money
-    return money unless VALID_MONEY.include? money
+    return money unless AVAILABLE_MONEY.include? money
     @total += money
     nil
   end

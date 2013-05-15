@@ -32,7 +32,7 @@ describe VendingMachine do
       expect(machine.insert(10)).to be_nil
       expect(machine.insert(10)).to be_nil
     end
-    context 'when invalid money' do
+    context 'when unavailable money' do
       context '1 yen' do
         it 'returns money' do
           expect(machine.insert(1)).to eq 1
