@@ -37,7 +37,7 @@ describe VendingMachine do
         it 'returns money' do
           expect(machine.insert(1)).to eq 1
         end
-        it 'does not increment total money' do
+        it 'does not increment total' do
           expect{machine.insert 1}.not_to change{machine.total}.from(0)
         end
       end
@@ -45,7 +45,7 @@ describe VendingMachine do
         it 'returns money' do
           expect(machine.insert(5)).to eq 5
         end
-        it 'does not increment total money' do
+        it 'does not increment total' do
           expect{machine.insert 5}.not_to change{machine.total}.from(0)
         end
       end
@@ -53,47 +53,41 @@ describe VendingMachine do
         it 'returns money' do
           expect(machine.insert(5000)).to eq 5000
         end
-        it 'does not increment total money' do
+        it 'does not increment total' do
           expect{machine.insert 5000}.not_to change{machine.total}.from(0)
         end
       end
     end
   end
   describe '#total' do
-    context 'when insert more than once' do
-      before do
-        machine.insert 10
-        machine.insert 50
-      end
-      specify { expect(machine.total).to eq 60 }
+    before do
+      machine.insert 10
+      machine.insert 50
     end
+    specify { expect(machine.total).to eq 60 }
   end
   describe '#change' do
     before do
-      insert 60
+      insert 120
     end
     it 'returns change' do
-      expect(machine.change).to eq 60
+      expect(machine.change).to eq 120
     end
-    it 'has no money' do
-      machine.change
-      expect(machine.total).to eq 0
+    it 'has no money after change' do
+      expect{machine.change}.to change{machine.total}.from(120).to(0)
     end
-    context 'after purchase' do
-      before do
-        purchase_cola
-      end
-      it 'has no change' do
-        expect(machine.change).to eq 0
-      end
+    it 'has no change after purchase' do
+      expect{machine.purchase :cola}.to change{machine.change}.from(120).to(0)
     end
   end
   describe '#stock_info' do
     it 'has 1 info' do
       expect(machine.stock_info[:cola]).not_to be_nil
     end
-    specify { expect(machine.stock_info[:cola][:price]).to eq 120 }
-    specify { expect(machine.stock_info[:cola][:stock]).to eq 5 }
+    it 'has valid info for cola' do
+      expect(machine.stock_info[:cola][:price]).to eq 120
+      expect(machine.stock_info[:cola][:stock]).to eq 5
+    end
     context 'when add water' do
       before do
         purchase_cola 5
@@ -159,7 +153,7 @@ describe VendingMachine do
         expect(machine.purchase :cola).to be_nil
       end
       it 'does not reduce stock' do
-        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola][:stock]}
+        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola][:stock]}.from(5)
       end
     end
     context 'when no cola' do
@@ -195,17 +189,11 @@ describe VendingMachine do
     end
   end
   describe '#sale_amount' do
-    context 'when purchase once' do
-      before do
-        purchase_cola
-      end
-      specify { expect(machine.sale_amount).to eq 120 }
+    it 'increases sale_amount after purchase' do
+      expect{purchase_cola}.to change{machine.sale_amount}.from(0).to(120)
     end
-    context 'when purchase twice' do
-      before do
-        purchase_cola 2
-      end
-      specify { expect(machine.sale_amount).to eq 240 }
+    it 'increases sale_amount after purchase twice' do
+      expect{purchase_cola 2}.to change{machine.sale_amount}.from(0).to(240)
     end
   end
   describe '#store' do
