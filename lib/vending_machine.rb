@@ -7,7 +7,7 @@ class VendingMachine
 
   def initialize
     @total = 0
-    @stock_table = {}
+    @drink_table = {}
     5.times { store Drink.cola }
     @sale_amount = 0
   end
@@ -26,7 +26,7 @@ class VendingMachine
 
   def purchase(drink_name)
     if can_purchase? drink_name
-      drink = pop_drink drink_name
+      drink = @drink_table[drink_name][:drinks].pop
       @sale_amount += drink.price
       @total -= drink.price
       [drink, refund]
@@ -38,28 +38,22 @@ class VendingMachine
   end
 
   def store(drink)
-    unless info = @stock_table[drink.name]
+    unless info = @drink_table[drink.name]
       info = { price: drink.price, drinks: [] }
-      @stock_table[drink.name] = info
+      @drink_table[drink.name] = info
     end
     info[:drinks] << drink
   end
 
   def available_drink_names
-    @stock_table.select{|_, info| info[:price] <= total && info[:drinks].size > 0 }.keys
+    @drink_table.select{|_, info| info[:price] <= total && info[:drinks].size > 0 }.keys
   end
 
   def stock_info
-    ret = {}
-    @stock_table.each do |name, info|
-      ret[name] = { price: info[:price], stock: info[:drinks].size }
+    @drink_table.inject({}) do |hash, array|
+      name, info = array
+      hash[name] = { price: info[:price], stock: info[:drinks].size }
+      hash
     end
-    ret
-  end
-
-  private
-
-  def pop_drink name
-    @stock_table[name][:drinks].pop
   end
 end
