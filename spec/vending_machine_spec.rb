@@ -100,21 +100,25 @@ describe VendingMachine do
     specify { expect(machine.stored_drink_info[0][:stock]).to eq 5 }
     context 'when add water' do
       before do
-        purchase_cola
+        purchase_cola 5
         2.times { machine.store Drink.water }
+        3.times { machine.store Drink.redbull }
       end
       it 'has 2 info' do
         expect(machine.stored_drink_info).to have(2).items
       end
-      it 'has valid info for cola' do
-        info = machine.stored_drink_info.find{|info| info[:name] == :cola}
-        expect(info[:price]).to eq 120
-        expect(info[:stock]).to eq 4
+      it 'does not have info for cola' do
+        expect(machine.stored_drink_info.find{|info| info[:name] == :cola}).to be_nil
       end
       it 'has valid info for water' do
         info = machine.stored_drink_info.find{|info| info[:name] == :water}
         expect(info[:price]).to eq 100
         expect(info[:stock]).to eq 2
+      end
+      it 'has valid info for redbull' do
+        info = machine.stored_drink_info.find{|info| info[:name] == :redbull}
+        expect(info[:price]).to eq 200
+        expect(info[:stock]).to eq 3
       end
     end
   end
