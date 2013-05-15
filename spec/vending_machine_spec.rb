@@ -93,11 +93,10 @@ describe VendingMachine do
   end
   describe '#stock_info' do
     it 'has 1 info' do
-      expect(machine.stock_info).to have(1).item
+      expect(machine.stock_info[:cola]).not_to be_nil
     end
-    specify { expect(machine.stock_info[0][:name]).to eq :cola }
-    specify { expect(machine.stock_info[0][:price]).to eq 120 }
-    specify { expect(machine.stock_info[0][:stock]).to eq 5 }
+    specify { expect(machine.stock_info[:cola][:price]).to eq 120 }
+    specify { expect(machine.stock_info[:cola][:stock]).to eq 5 }
     context 'when add water' do
       before do
         purchase_cola 5
@@ -108,22 +107,22 @@ describe VendingMachine do
         expect(machine.stock_info).to have(2).items
       end
       it 'does not have info for cola' do
-        expect(machine.stock_info.find{|info| info[:name] == :cola}).to be_nil
+        expect(machine.stock_info[:cola]).to be_nil
       end
       it 'has valid info for water' do
-        info = machine.stock_info.find{|info| info[:name] == :water}
+        info = machine.stock_info[:water]
         expect(info[:price]).to eq 100
         expect(info[:stock]).to eq 2
       end
       it 'has valid info for redbull' do
-        info = machine.stock_info.find{|info| info[:name] == :redbull}
+        info = machine.stock_info[:redbull]
         expect(info[:price]).to eq 200
         expect(info[:stock]).to eq 3
       end
     end
   end
   describe '#can_purchase?' do
-    context 'when drinks and money okay' do
+    context 'when stock and money okay' do
       before do
         insert 120
       end
@@ -144,16 +143,15 @@ describe VendingMachine do
     end
   end
   describe '#purchase' do
-    context 'when drinks and money okay' do
+    context 'when stock and money okay' do
       before do
         insert 120
       end
       it 'can purchase' do
         expect(machine.purchase :cola).to eq [Drink.cola, 0]
       end
-      it 'reduces drinks' do
-        machine.purchase :cola
-        expect(machine.drinks).to have(4).items
+      it 'reduces stock' do
+        expect{machine.purchase :cola}.to change{machine.stock_info[:cola][:stock]}.from(5).to(4)
       end
     end
     context 'when money is not enough' do
@@ -163,8 +161,8 @@ describe VendingMachine do
       it 'cannot purchase' do
         expect(machine.purchase :cola).to be_nil
       end
-      it 'does not reduce drinks' do
-        expect{machine.purchase :cola}.not_to change{machine.drinks}
+      it 'does not reduce stock' do
+        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola][:stock]}
       end
     end
     context 'when no cola' do
@@ -175,8 +173,8 @@ describe VendingMachine do
       it 'cannot purchase' do
         expect(machine.purchase :cola).to be_nil
       end
-      it 'does not reduce drinks' do
-        expect{machine.purchase :cola}.not_to change{machine.drinks}.from(0)
+      it 'does not reduce stock' do
+        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola]}.from(nil)
       end
       it 'does not increase sale_amount' do
         expect{machine.purchase :cola}.not_to change{machine.sale_amount}.from(120 * 5)
@@ -214,7 +212,7 @@ describe VendingMachine do
   end
   describe '#store' do
     it 'can store drink' do
-      expect{2.times{machine.store Drink.redbull}}.to change{machine.drinks.count(Drink.redbull)}.from(0).to(2)
+      expect{machine.store Drink.redbull}.to change{machine.stock_info[:redbull]}.from(nil)
     end
   end
   describe '#available_drink_names' do
