@@ -66,18 +66,18 @@ describe VendingMachine do
     end
     specify { expect(machine.total).to eq 60 }
   end
-  describe '#change' do
+  describe '#refund' do
     before do
       insert 120
     end
     it 'returns change' do
-      expect(machine.change).to eq 120
+      expect(machine.refund).to eq 120
     end
-    it 'has no money after change' do
-      expect{machine.change}.to change{machine.total}.from(120).to(0)
+    it 'has no money after refund' do
+      expect{machine.refund}.to change{machine.total}.from(120).to(0)
     end
     it 'has no change after purchase' do
-      expect{machine.purchase :cola}.to change{machine.change}.from(120).to(0)
+      expect{machine.purchase :cola}.to change{machine.refund}.from(120).to(0)
     end
   end
   describe '#stock_info' do

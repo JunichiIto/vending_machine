@@ -16,7 +16,7 @@ class VendingMachine
     nil
   end
 
-  def change
+  def refund
     change = total
     @total = 0
     change
@@ -27,7 +27,7 @@ class VendingMachine
       drink = pop_drink drink_name
       @sale_amount += drink.price
       @total -= drink.price
-      [drink, change]
+      [drink, refund]
     end
   end
 

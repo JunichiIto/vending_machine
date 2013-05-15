@@ -17,7 +17,7 @@ $ irb
 => 1
 > machine.total
 => 110
-> machine.change
+> machine.refund
 => 110
 > machine.total
 => 0
@@ -42,9 +42,9 @@ $ irb
 => true
 > machine.can_purchase? :cola
 => false
-> machine.change
+> machine.refund
 => 100
-> machine.change
+> machine.refund
 => 0
 > exit
 ````
