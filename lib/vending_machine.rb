@@ -7,9 +7,9 @@ class VendingMachine
 
   def initialize
     @total = 0
+    @sale_amount = 0
     @drink_table = {}
     5.times { store Drink.cola }
-    @sale_amount = 0
   end
 
   def insert money
@@ -38,11 +38,10 @@ class VendingMachine
   end
 
   def store(drink)
-    unless info = @drink_table[drink.name]
-      info = { price: drink.price, drinks: [] }
-      @drink_table[drink.name] = info
+    unless @drink_table.has_key? drink.name
+      @drink_table[drink.name] = { price: drink.price, drinks: [] }
     end
-    info[:drinks] << drink
+    @drink_table[drink.name][:drinks] << drink
   end
 
   def purchasable_drink_names
