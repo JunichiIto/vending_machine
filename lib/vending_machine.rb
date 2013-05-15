@@ -43,7 +43,7 @@ class VendingMachine
     drinks.uniq.select{|d| d.price <= total }.map(&:name)
   end
 
-  def stored_drink_info
+  def stock_info
     ret = []
     @drinks.each do |drink|
       puts drink
