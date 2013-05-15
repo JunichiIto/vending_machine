@@ -170,10 +170,8 @@ describe VendingMachine do
       it 'does not increase sale_amount' do
         expect{machine.purchase :cola}.not_to change{machine.sale_amount}.from(120 * 5)
       end
-      it 'returns inserted money' do
-        pending "should not do anything"
-        machine.purchase :cola
-        expect(machine.change).to eq 120
+      it 'keeps inserted money' do
+        expect{machine.purchase :cola}.not_to change{machine.total}.from(120)
       end
     end
     context 'when money exceeds price' do
