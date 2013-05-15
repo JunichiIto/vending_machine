@@ -2,45 +2,45 @@ require './lib/drink'
 
 class VendingMachine
   VALID_MONEY = [10, 50, 100, 500, 1000]
-  attr_reader :total_money, :drinks, :sale
+  attr_reader :total, :drinks, :sale_amount
 
   def initialize
-    @total_money = 0
+    @total = 0
     @drinks = Array.new(5, Drink.cola)
-    @sale = 0
+    @sale_amount = 0
   end
 
-  def insert_money money
+  def insert money
     return money unless VALID_MONEY.include? money
-    @total_money += money
+    @total += money
     nil
   end
 
   def change
-    change = total_money
-    @total_money = 0
+    change = total
+    @total = 0
     change
   end
 
-  def buy(drink_name)
-    if can_buy? drink_name
+  def purchase(drink_name)
+    if can_purchase? drink_name
       drink = pop_drink drink_name
-      @sale += drink.price
-      @total_money -= drink.price
+      @sale_amount += drink.price
+      @total -= drink.price
       [drink, change]
     end
   end
 
-  def can_buy?(drink_name)
+  def can_purchase?(drink_name)
     available_drink_names.include? drink_name
   end
 
-  def add_drink(drink)
+  def store(drink)
     drinks << drink
   end
 
   def available_drink_names
-    drinks.uniq.select{|d| d.price <= total_money }.map(&:name)
+    drinks.uniq.select{|d| d.price <= total }.map(&:name)
   end
 
   private

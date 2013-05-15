@@ -9,38 +9,38 @@ $ irb
 > require './lib/drink'
 > require './lib/vending_machine'
 > machine = VendingMachine.new # has 5 cola-s by default, price: 120
-> machine.insert_money 10
+> machine.insert 10
 => nil
-> machine.insert_money 100
+> machine.insert 100
 => nil
-> machine.insert_money 1
+> machine.insert 1
 => 1
-> machine.total_money
+> machine.total
 => 110
 > machine.change
 => 110
-> machine.total_money
+> machine.total
 => 0
-> machine.insert_money 10
-> machine.insert_money 10
-> machine.insert_money 100
-> machine.buy :cola
+> machine.insert 10
+> machine.insert 10
+> machine.insert 100
+> machine.purchase :cola
 => [<Drink: name=cola, price=120>, 0]
-> machine.total_money
+> machine.total
 => 0
-> machine.add_drink Drink.redbull # price: 200
-> machine.add_drink Drink.water # price: 100
-> machine.insert_money 1000
+> machine.store Drink.redbull # price: 200
+> machine.store Drink.water # price: 100
+> machine.insert 1000
 > machine.available_drink_names
 => [:cola, :redbull, :water]
-> machine.buy :redbull
+> machine.purchase :redbull
 => [<Drink: name=redbull, price=200>, 800]
-> machine.sale
+> machine.sale_amount
 => 320
-> machine.insert_money 100
-> machine.can_buy? :water
+> machine.insert 100
+> machine.can_purchase? :water
 => true
-> machine.can_buy? :cola
+> machine.can_purchase? :cola
 => false
 > machine.change
 => 100
