@@ -3,7 +3,7 @@ require './lib/vending_machine'
 
 describe VendingMachine do
   def insert amount_of_money
-    (amount_of_money/10).times { machine.insert 10 }
+    (amount_of_money / 10).times { machine.insert 10 }
   end
   def purchase_cola(amount = 1)
     amount.times do
@@ -38,8 +38,7 @@ describe VendingMachine do
           expect(machine.insert(1)).to eq 1
         end
         it 'does not increment total money' do
-          machine.insert 1
-          expect(machine.total).to eq 0
+          expect{machine.insert 1}.not_to change{machine.total}.from(0)
         end
       end
       context '5 yen' do
@@ -47,8 +46,7 @@ describe VendingMachine do
           expect(machine.insert(5)).to eq 5
         end
         it 'does not increment total money' do
-          machine.insert 5
-          expect(machine.total).to eq 0
+          expect{machine.insert 5}.not_to change{machine.total}.from(0)
         end
       end
       context '5000 yen' do
@@ -56,8 +54,7 @@ describe VendingMachine do
           expect(machine.insert(5000)).to eq 5000
         end
         it 'does not increment total money' do
-          machine.insert 5000
-          expect(machine.total).to eq 0
+          expect{machine.insert 5000}.not_to change{machine.total}.from(0)
         end
       end
     end
@@ -180,6 +177,7 @@ describe VendingMachine do
         expect{machine.purchase :cola}.not_to change{machine.sale_amount}.from(120 * 5)
       end
       it 'returns inserted money' do
+        pending "should not do anything"
         machine.purchase :cola
         expect(machine.change).to eq 120
       end
@@ -227,22 +225,16 @@ describe VendingMachine do
       it 'can purchase all items' do
         expect(machine.available_drink_names).to have(3).items
       end
-      it 'can purchase cola-s' do
-        expect(machine.available_drink_names.include?(:cola)).to be_true
-      end
       it 'can purchase cola' do
+        expect(machine.available_drink_names.include?(:cola)).to be_true
         expect(machine.can_purchase? :cola).to be_true
       end
-      it 'can purchase redbulls' do
-        expect(machine.available_drink_names.include?(:redbull)).to be_true
-      end
       it 'can purchase redbull' do
+        expect(machine.available_drink_names.include?(:redbull)).to be_true
         expect(machine.can_purchase? :redbull).to be_true
       end
-      it 'can purchase water-s' do
-        expect(machine.available_drink_names.include?(:water)).to be_true
-      end
       it 'can purchase water' do
+        expect(machine.available_drink_names.include?(:water)).to be_true
         expect(machine.can_purchase? :water).to be_true
       end
     end
@@ -253,22 +245,16 @@ describe VendingMachine do
       it 'can purchase all items except for redbull' do
         expect(machine.available_drink_names).to have(2).items
       end
-      it 'can purchase cola-s' do
-        expect(machine.available_drink_names.include?(:cola)).to be_true
-      end
       it 'can purchase cola' do
+        expect(machine.available_drink_names.include?(:cola)).to be_true
         expect(machine.can_purchase? :cola).to be_true
       end
       it 'cannot purchase redbull' do
         expect(machine.available_drink_names.include?(:redbull)).to be_false
-      end
-      it 'cannot purchase redull' do
         expect(machine.can_purchase? :redbull).to be_false
       end
-      it 'can purchase water-s' do
-        expect(machine.available_drink_names.include?(:water)).to be_true
-      end
       it 'can purchase water' do
+        expect(machine.available_drink_names.include?(:water)).to be_true
         expect(machine.can_purchase? :water).to be_true
       end
     end
@@ -280,23 +266,17 @@ describe VendingMachine do
       it 'can purchase water and redbull' do
         expect(machine.available_drink_names).to have(2).items
       end
-      it 'can purchase redbulls' do
+      it 'can purchase redbull' do
         expect(machine.available_drink_names.include?(:redbull)).to be_true
-      end
-      it 'can purchase water-s' do
-        expect(machine.available_drink_names.include?(:water)).to be_true
-      end
-      it 'cannot purchase cola-s' do
-        expect(machine.available_drink_names.include?(:cola)).to be_false
+        expect(machine.can_purchase? :redbull).to be_true
       end
       it 'can purchase water' do
+        expect(machine.available_drink_names.include?(:water)).to be_true
         expect(machine.can_purchase? :water).to be_true
       end
       it 'cannot purchase cola' do
+        expect(machine.available_drink_names.include?(:cola)).to be_false
         expect(machine.can_purchase? :cola).to be_false
-      end
-      it 'can purchase redbull' do
-        expect(machine.can_purchase? :redbull).to be_true
       end
     end
   end
