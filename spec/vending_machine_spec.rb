@@ -2,6 +2,15 @@ require 'rspec'
 require './lib/vending_machine'
 
 describe VendingMachine do
+  def insert amount_of_money
+    (amount_of_money/10).times { machine.insert 10 }
+  end
+  def purchase_cola(amount = 1)
+    amount.times do
+      insert 120
+      machine.purchase :cola
+    end
+  end
   let(:machine) { VendingMachine.new }
   describe "#insert" do
     it 'inserts 10 yen' do
@@ -54,7 +63,7 @@ describe VendingMachine do
     end
   end
   describe '#total' do
-    context 'more than once' do
+    context 'when insert more than once' do
       before do
         machine.insert 10
         machine.insert 50
@@ -64,8 +73,7 @@ describe VendingMachine do
   end
   describe '#change' do
     before do
-        machine.insert 10
-        machine.insert 50
+      insert 60
     end
     it 'returns change' do
       expect(machine.change).to eq 60
@@ -76,8 +84,7 @@ describe VendingMachine do
     end
     context 'after purchase' do
       before do
-        machine.insert 100
-        machine.purchase :cola
+        purchase_cola
       end
       it 'has no change' do
         expect(machine.change).to eq 0
@@ -95,30 +102,20 @@ describe VendingMachine do
   describe '#can_purchase?' do
     context 'when drinks and money okay' do
       before do
-        machine.insert 10
-        machine.insert 10
-        machine.insert 100
+        insert 120
       end
       specify{ expect(machine.can_purchase? :cola).to be_true }
     end
     context 'when money is not emough' do
       before do
-        machine.insert 10
-        machine.insert 100
+        insert 110
       end
       specify{ expect(machine.can_purchase? :cola).to be_false }
     end
     context 'when no cola' do
       before do
-        5.times do
-          machine.insert 10
-          machine.insert 10
-          machine.insert 100
-          machine.purchase :cola
-        end
-        machine.insert 10
-        machine.insert 10
-        machine.insert 100
+        purchase_cola 5
+        insert 120
       end
       specify{ expect(machine.can_purchase? :cola).to be_false }
     end
@@ -126,9 +123,7 @@ describe VendingMachine do
   describe '#purchase' do
     context 'when drinks and money okay' do
       before do
-        machine.insert 10
-        machine.insert 10
-        machine.insert 100
+        insert 120
       end
       it 'can purchase' do
         expect(machine.purchase :cola).to eq [Drink.cola, 0]
@@ -140,8 +135,7 @@ describe VendingMachine do
     end
     context 'when money is not enough' do
       before do
-        machine.insert 10
-        machine.insert 100
+        insert 110
       end
       it 'cannot purchase' do
         expect(machine.purchase :cola).to be_nil
@@ -152,15 +146,8 @@ describe VendingMachine do
     end
     context 'when no cola' do
       before do
-        5.times do
-          machine.insert 10
-          machine.insert 10
-          machine.insert 100
-          machine.purchase :cola
-        end
-        machine.insert 10
-        machine.insert 10
-        machine.insert 100
+        purchase_cola 5
+        insert 120
       end
       it 'cannot purchase' do
         expect(machine.purchase :cola).to be_nil
@@ -178,7 +165,7 @@ describe VendingMachine do
     end
     context 'when money exceeds price' do
       before do
-        machine.insert 500
+        insert 500
       end
       it 'returns drink and change' do
         expect(machine.purchase :cola).to eq [Drink.cola, 500 - 120]
@@ -189,47 +176,32 @@ describe VendingMachine do
     end
   end
   describe '#sale_amount' do
-    context 'when once' do
+    context 'when purchase once' do
       before do
-        machine.insert 10
-        machine.insert 10
-        machine.insert 100
-        machine.purchase :cola
+        purchase_cola
       end
       specify { expect(machine.sale_amount).to eq 120 }
     end
-    context 'when twice' do
+    context 'when purchase twice' do
       before do
-        2.times do
-          machine.insert 10
-          machine.insert 10
-          machine.insert 100
-          machine.purchase :cola
-        end
+        purchase_cola 2
       end
       specify { expect(machine.sale_amount).to eq 240 }
     end
   end
   describe '#store' do
-    it 'can add drink' do
-      machine.store Drink.redbull
-      machine.store Drink.redbull
-      expect(machine.drinks.count(Drink.redbull)).to eq 2
+    it 'can store drink' do
+      expect{2.times{machine.store Drink.redbull}}.to change{machine.drinks.count(Drink.redbull)}.from(0).to(2)
     end
   end
   describe '#available_drink_names' do
     before do
-      5.times do
-        machine.store Drink.redbull
-      end
-      5.times do
-        machine.store Drink.water
-      end
+      5.times { machine.store Drink.redbull }
+      5.times { machine.store Drink.water }
     end
     context 'when insert 200yen' do
       before do
-        machine.insert 100
-        machine.insert 100
+        insert 200
       end
       it 'can purchase all items' do
         expect(machine.available_drink_names).to have(3).items
@@ -255,7 +227,7 @@ describe VendingMachine do
     end
     context 'when insert 190yen' do
       before do
-        19.times { machine.insert 10 }
+        insert 190
       end
       it 'can purchase all items except for redbull' do
         expect(machine.available_drink_names).to have(2).items
@@ -281,15 +253,8 @@ describe VendingMachine do
     end
     context 'when no cola' do
       before do
-        5.times do
-          12.times do
-            machine.insert 10
-          end
-          machine.purchase :cola
-        end
-        20.times do
-          machine.insert 10
-        end
+        purchase_cola 5
+        insert 200
       end
       it 'can purchase water and redbull' do
         expect(machine.available_drink_names).to have(2).items
