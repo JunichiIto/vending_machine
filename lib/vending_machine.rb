@@ -2,13 +2,13 @@ require './lib/drink'
 
 class VendingMachine
   AVAILABLE_MONEY = [10, 50, 100, 500, 1000]
-  DEFAULT_DRINKS = Array.new(5, Drink.cola)
 
   attr_reader :total, :sale_amount
 
   def initialize
     @total = 0
-    @drinks = DEFAULT_DRINKS.dup
+    @stock_table = {}
+    5.times { store Drink.cola }
     @sale_amount = 0
   end
 
@@ -38,27 +38,28 @@ class VendingMachine
   end
 
   def store(drink)
-    @drinks << drink
+    unless info = @stock_table[drink.name]
+      info = { price: drink.price, drinks: [] }
+      @stock_table[drink.name] = info
+    end
+    info[:drinks] << drink
   end
 
   def available_drink_names
-    stock_info.select{|_, info| info[:price] <= total }.keys
+    @stock_table.select{|_, info| info[:price] <= total && info[:drinks].size > 0 }.keys
   end
 
   def stock_info
-    @drinks.inject({}) do |hash, drink|
-      if info = hash[drink.name]
-        info[:stock] += 1
-      else
-        hash[drink.name] = { price: drink.price, stock: 1 }
-      end
-      hash
+    ret = {}
+    @stock_table.each do |name, info|
+      ret[name] = { price: info[:price], stock: info[:drinks].size }
     end
+    ret
   end
 
   private
 
   def pop_drink name
-    @drinks.delete_at(@drinks.index{|d| d.name == name })
+    @stock_table[name][:drinks].pop
   end
 end

@@ -94,11 +94,13 @@ describe VendingMachine do
         2.times { machine.store Drink.water }
         3.times { machine.store Drink.redbull }
       end
-      it 'has 2 info' do
-        expect(machine.stock_info).to have(2).items
+      it 'has 3 info' do
+        expect(machine.stock_info).to have(3).items
       end
-      it 'does not have info for cola' do
-        expect(machine.stock_info[:cola]).to be_nil
+      it 'has valid info for cola' do
+        info = machine.stock_info[:cola]
+        expect(info[:price]).to eq 120
+        expect(info[:stock]).to eq 0
       end
       it 'has valid info for water' do
         info = machine.stock_info[:water]
@@ -165,7 +167,7 @@ describe VendingMachine do
         expect(machine.purchase :cola).to be_nil
       end
       it 'does not reduce stock' do
-        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola]}.from(nil)
+        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola][:stock]}.from(0)
       end
       it 'does not increase sale_amount' do
         expect{machine.purchase :cola}.not_to change{machine.sale_amount}.from(120 * 5)
