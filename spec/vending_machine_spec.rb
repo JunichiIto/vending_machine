@@ -91,12 +91,31 @@ describe VendingMachine do
       end
     end
   end
-  describe '#drinks' do
-    it 'has 5 drinks by default' do
-      expect(machine.drinks).to have(5).items
+  describe '#stored_drink_info' do
+    it 'has 1 info' do
+      expect(machine.stored_drink_info).to have(1).item
     end
-    it 'has 5 cola-s' do
-      expect(machine.drinks.count(Drink.cola)).to eq 5
+    specify { expect(machine.stored_drink_info[0][:name]).to eq :cola }
+    specify { expect(machine.stored_drink_info[0][:price]).to eq 120 }
+    specify { expect(machine.stored_drink_info[0][:stock]).to eq 5 }
+    context 'when add water' do
+      before do
+        purchase_cola
+        2.times { machine.store Drink.water }
+      end
+      it 'has 2 info' do
+        expect(machine.stored_drink_info).to have(2).items
+      end
+      it 'has valid info for cola' do
+        info = machine.stored_drink_info.find{|info| info[:name] == :cola}
+        expect(info[:price]).to eq 120
+        expect(info[:stock]).to eq 4
+      end
+      it 'has valid info for water' do
+        info = machine.stored_drink_info.find{|info| info[:name] == :water}
+        expect(info[:price]).to eq 100
+        expect(info[:stock]).to eq 2
+      end
     end
   end
   describe '#can_purchase?' do

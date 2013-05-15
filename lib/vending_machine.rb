@@ -43,6 +43,19 @@ class VendingMachine
     drinks.uniq.select{|d| d.price <= total }.map(&:name)
   end
 
+  def stored_drink_info
+    ret = []
+    @drinks.each do |drink|
+      puts drink
+      if info = ret.find{|info| info[:name] == drink.name}
+        info[:stock] += 1
+      else
+        ret << { name: drink.name, price: drink.price, stock: 1 }
+      end
+    end
+    ret
+  end
+
   private
 
   def pop_drink name
