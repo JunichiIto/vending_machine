@@ -40,7 +40,7 @@ class VendingMachine
   end
 
   def available_drink_names
-    @drinks.uniq.select{|d| d.price <= total }.map(&:name)
+    stock_info.select{|_, info| info[:price] <= total }.keys
   end
 
   def stock_info
