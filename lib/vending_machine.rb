@@ -44,16 +44,14 @@ class VendingMachine
   end
 
   def stock_info
-    ret = []
-    @drinks.each do |drink|
-      puts drink
-      if info = ret.find{|info| info[:name] == drink.name}
+    @drinks.inject([]) do |array, drink|
+      if info = array.find{|info| info[:name] == drink.name}
         info[:stock] += 1
       else
-        ret << { name: drink.name, price: drink.price, stock: 1 }
+        array << { name: drink.name, price: drink.price, stock: 1 }
       end
+      array
     end
-    ret
   end
 
   private
