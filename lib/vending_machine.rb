@@ -2,11 +2,13 @@ require './lib/drink'
 
 class VendingMachine
   AVAILABLE_MONEY = [10, 50, 100, 500, 1000]
+  DEFAULT_DRINKS = Array.new(5, Drink.cola)
+
   attr_reader :total, :sale_amount
 
   def initialize
     @total = 0
-    @drinks = Array.new(5, Drink.cola)
+    @drinks = DEFAULT_DRINKS.dup
     @sale_amount = 0
   end
 
