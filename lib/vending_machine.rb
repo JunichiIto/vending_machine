@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/drink')
 
 class VendingMachine
-  AVAILABLE_MONEY = [10, 50, 100, 500, 1000]
+  AVAILABLE_MONEY = [10, 50, 100, 500, 1000].freeze
 
   attr_reader :total, :sale_amount
 
@@ -12,25 +12,21 @@ class VendingMachine
     5.times { store Drink.cola }
   end
 
-  def insert money
-    return money unless AVAILABLE_MONEY.include? money
-    @total += money
-    nil
+  def insert(money)
+    AVAILABLE_MONEY.include?(money) ? nil.tap { @total += money } : money
   end
 
   def refund
-    change = total
-    @total = 0
-    change
+    total.tap { @total = 0 }
   end
 
   def purchase(drink_name)
-    return unless purchasable? drink_name
-
-    drink = @drink_table[drink_name][:drinks].pop
-    @sale_amount += drink.price
-    @total -= drink.price
-    [drink, refund]
+    if purchasable? drink_name
+      drink = @drink_table[drink_name][:drinks].pop
+      @sale_amount += drink.price
+      @total -= drink.price
+      [drink, refund]
+    end
   end
 
   def purchasable?(drink_name)
@@ -42,9 +38,10 @@ class VendingMachine
   end
 
   def store(drink)
-    @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
-    @drink_table[drink.name][:drinks] << drink
-    nil
+    nil.tap do
+      @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
+      @drink_table[drink.name][:drinks] << drink
+    end
   end
 
   def stock_info
