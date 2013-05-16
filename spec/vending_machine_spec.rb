@@ -28,8 +28,7 @@ describe VendingMachine do
       expect(machine.insert 1000).to be_nil
     end
     it 'inserts more than once' do
-      expect(machine.insert 10).to be_nil
-      expect(machine.insert 10).to be_nil
+      2.times { expect(machine.insert 10).to be_nil }
     end
     context 'when unavailable money' do
       context '1 yen' do
@@ -84,8 +83,7 @@ describe VendingMachine do
       expect(machine.stock_info[:cola]).not_to be_nil
     end
     it 'has valid info for cola' do
-      expect(machine.stock_info[:cola][:price]).to eq 120
-      expect(machine.stock_info[:cola][:stock]).to eq 5
+      expect(machine.stock_info[:cola]).to include(price: 120, stock: 5)
     end
     context 'when add water' do
       before do
@@ -97,19 +95,13 @@ describe VendingMachine do
         expect(machine.stock_info).to have(3).items
       end
       it 'has valid info for cola' do
-        info = machine.stock_info[:cola]
-        expect(info[:price]).to eq 120
-        expect(info[:stock]).to eq 0
+        expect(machine.stock_info[:cola]).to include(price: 120, stock: 0)
       end
       it 'has valid info for water' do
-        info = machine.stock_info[:water]
-        expect(info[:price]).to eq 100
-        expect(info[:stock]).to eq 2
+        expect(machine.stock_info[:water]).to include(price: 100, stock: 2)
       end
       it 'has valid info for redbull' do
-        info = machine.stock_info[:redbull]
-        expect(info[:price]).to eq 200
-        expect(info[:stock]).to eq 3
+        expect(machine.stock_info[:redbull]).to include(price: 200, stock: 3)
       end
     end
   end
