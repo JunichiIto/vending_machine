@@ -13,28 +13,28 @@ describe VendingMachine do
   let(:machine) { VendingMachine.new }
   describe "#insert" do
     it 'inserts 10 yen' do
-      expect(machine.insert(10)).to be_nil
+      expect(machine.insert 10).to be_nil
     end
     it 'inserts 50 yen' do
-      expect(machine.insert(50)).to be_nil
+      expect(machine.insert 50).to be_nil
     end
     it 'inserts 100 yen' do
-      expect(machine.insert(100)).to be_nil
+      expect(machine.insert 100).to be_nil
     end
     it 'inserts 500 yen' do
-      expect(machine.insert(500)).to be_nil
+      expect(machine.insert 500).to be_nil
     end
     it 'inserts 1000 yen' do
-      expect(machine.insert(1000)).to be_nil
+      expect(machine.insert 1000).to be_nil
     end
     it 'inserts more than once' do
-      expect(machine.insert(10)).to be_nil
-      expect(machine.insert(10)).to be_nil
+      expect(machine.insert 10).to be_nil
+      expect(machine.insert 10).to be_nil
     end
     context 'when unavailable money' do
       context '1 yen' do
         it 'returns money' do
-          expect(machine.insert(1)).to eq 1
+          expect(machine.insert 1).to eq 1
         end
         it 'does not increment total' do
           expect{machine.insert 1}.not_to change{machine.total}.from(0)
@@ -42,7 +42,7 @@ describe VendingMachine do
       end
       context '5 yen' do
         it 'returns money' do
-          expect(machine.insert(5)).to eq 5
+          expect(machine.insert 5).to eq 5
         end
         it 'does not increment total' do
           expect{machine.insert 5}.not_to change{machine.total}.from(0)
@@ -50,7 +50,7 @@ describe VendingMachine do
       end
       context '5000 yen' do
         it 'returns money' do
-          expect(machine.insert(5000)).to eq 5000
+          expect(machine.insert 5000).to eq 5000
         end
         it 'does not increment total' do
           expect{machine.insert 5000}.not_to change{machine.total}.from(0)
@@ -120,7 +120,7 @@ describe VendingMachine do
       end
       specify{ expect(machine.purchasable? :cola).to be_true }
     end
-    context 'when money is not emough' do
+    context 'when money is not enough' do
       before do
         insert 110
       end
