@@ -212,34 +212,22 @@ describe VendingMachine do
       before do
         insert 200
       end
-      it 'can purchase all items' do
+      it 'can purchase all drinks' do
         expect(machine.purchasable_drink_names).to have(3).items
       end
-      it 'can purchase cola' do
-        expect(machine.purchasable_drink_names.include?(:cola)).to be_true
-      end
-      it 'can purchase redbull' do
-        expect(machine.purchasable_drink_names.include?(:redbull)).to be_true
-      end
-      it 'can purchase water' do
-        expect(machine.purchasable_drink_names.include?(:water)).to be_true
+      it 'contains all drinks' do
+        expect(machine.purchasable_drink_names).to include(:cola, :redbull, :water)
       end
     end
     context 'when insert 190yen' do
       before do
         insert 190
       end
-      it 'can purchase all items except for redbull' do
+      it 'can purchase all drinks except for redbull' do
         expect(machine.purchasable_drink_names).to have(2).items
       end
-      it 'can purchase cola' do
-        expect(machine.purchasable_drink_names.include?(:cola)).to be_true
-      end
-      it 'cannot purchase redbull' do
-        expect(machine.purchasable_drink_names.include?(:redbull)).to be_false
-      end
-      it 'can purchase water' do
-        expect(machine.purchasable_drink_names.include?(:water)).to be_true
+      it 'includes all drinks except for redbull' do
+        expect(machine.purchasable_drink_names).to include(:cola, :water)
       end
     end
     context 'when no cola' do
@@ -247,17 +235,11 @@ describe VendingMachine do
         purchase_cola 5
         insert 200
       end
-      it 'can purchase water and redbull' do
+      it 'can purchase all drinks except for cola' do
         expect(machine.purchasable_drink_names).to have(2).items
       end
-      it 'can purchase redbull' do
-        expect(machine.purchasable_drink_names.include?(:redbull)).to be_true
-      end
-      it 'can purchase water' do
-        expect(machine.purchasable_drink_names.include?(:water)).to be_true
-      end
-      it 'cannot purchase cola' do
-        expect(machine.purchasable_drink_names.include?(:cola)).to be_false
+      it 'includes all drinks except for cola' do
+        expect(machine.purchasable_drink_names).to include(:redbull, :water)
       end
     end
   end
