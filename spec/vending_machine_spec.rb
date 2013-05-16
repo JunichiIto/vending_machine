@@ -64,9 +64,6 @@ describe VendingMachine do
       it_should_behave_like 'unavailable money' do
         let(:money) { 10000 }
       end
-      it_should_behave_like 'unavailable money' do
-        let(:money) { 2000 }
-      end
     end
   end
   describe '#total' do
