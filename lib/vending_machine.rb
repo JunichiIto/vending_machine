@@ -44,7 +44,7 @@ class VendingMachine
   end
 
   def purchasable_drink_names
-    @drink_table.select{|_, info| info[:price] <= total && info[:drinks].size > 0 }.keys
+    @drink_table.select{|_, info| info[:price] <= total && info[:drinks].any? }.keys
   end
 
   def stock_info
