@@ -6,46 +6,32 @@ Sample implementation for http://devtesting.jp/tddbc/?TDDBC%E5%A4%A7%E9%98%AA2.0
 
 ````
 $ irb
-> require './lib/drink'
 > require './lib/vending_machine'
-> machine = VendingMachine.new # has 5 cola-s by default, price: 120
+> machine = VendingMachine.new
+> machine.stock_info # => {:cola=>{:price=>120, :stock=>5}}
+> machine.store Drink.redbull
+> machine.store Drink.water
+> machine.stock_info # => {:cola=>{:price=>120, :stock=>5}, :redbull=>{:price=>200, :stock=>1}, :water=>{:price=>100, :stock=>1}}
 > machine.insert 10
-=> nil
+> machine.insert 50
+> machine.total # => 60
+> machine.refund # => 60
+> machine.total # => 0
 > machine.insert 100
-=> nil
-> machine.insert 1
-=> 1
-> machine.total
-=> 110
-> machine.refund
-=> 110
-> machine.total
-=> 0
-> machine.insert 10
-> machine.insert 10
+> machine.purchasable_drink_names # => [:water]
+> machine.purchasable? :water # => true
+> machine.purchasable? :cola # => false
+> machine.purchasable? :redbull # => false
+> machine.insert 50
+> machine.purchasable_drink_names # => [:cola, :water]
+> machine.purchasable? :cola # => true
 > machine.insert 100
-> machine.purchase :cola
-=> [<Drink: name=cola, price=120>, 0]
-> machine.total
-=> 0
-> machine.store Drink.redbull # price: 200
-> machine.store Drink.water # price: 100
-> machine.insert 1000
-> machine.available_drink_names
-=> [:cola, :redbull, :water]
-> machine.purchase :redbull
-=> [<Drink: name=redbull, price=200>, 800]
-> machine.sale_amount
-=> 320
-> machine.insert 100
-> machine.can_purchase? :water
-=> true
-> machine.can_purchase? :cola
-=> false
-> machine.refund
-=> 100
-> machine.refund
-=> 0
+> machine.purchasable_drink_names # => [:cola, :redbull, :water]
+> machine.purchasable? :redbull # => true
+> machine.total # => 250
+> machine.purchase :redbull # => [<Drink: name=redbull, price=200>, 50]
+> machine.total # => 0
+> machine.refund # => 0
 > exit
 ````
 
