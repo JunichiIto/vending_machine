@@ -12,48 +12,60 @@ describe VendingMachine do
   end
   let(:machine) { VendingMachine.new }
   describe "#insert" do
-    it 'inserts 10 yen' do
-      expect(machine.insert 10).to be_nil
-    end
-    it 'inserts 50 yen' do
-      expect(machine.insert 50).to be_nil
-    end
-    it 'inserts 100 yen' do
-      expect(machine.insert 100).to be_nil
-    end
-    it 'inserts 500 yen' do
-      expect(machine.insert 500).to be_nil
-    end
-    it 'inserts 1000 yen' do
-      expect(machine.insert 1000).to be_nil
-    end
-    it 'inserts more than once' do
-      2.times { expect(machine.insert 10).to be_nil }
+    context 'when available money' do
+      shared_examples_for 'available money' do
+        it 'does not return money' do
+          expect(machine.insert money).to be_nil
+        end
+        it 'increments total' do
+          expect{machine.insert money}.to change{machine.total}.from(0).to(money)
+        end
+        it 'can insert more than once' do
+          2.times { expect(machine.insert money).to be_nil }
+        end
+      end
+      it_should_behave_like 'available money' do
+        let(:money) { 10 }
+      end
+      it_should_behave_like 'available money' do
+        let(:money) { 50 }
+      end
+      it_should_behave_like 'available money' do
+        let(:money) { 100 }
+      end
+      it_should_behave_like 'available money' do
+        let(:money) { 500 }
+      end
+      it_should_behave_like 'available money' do
+        let(:money) { 1000 }
+      end
     end
     context 'when unavailable money' do
-      context '1 yen' do
+      shared_examples_for 'unavailable money' do
         it 'returns money' do
-          expect(machine.insert 1).to eq 1
+          expect(machine.insert money).to eq money
         end
         it 'does not increment total' do
-          expect{machine.insert 1}.not_to change{machine.total}.from(0)
+          expect{machine.insert money}.not_to change{machine.total}.from(0)
         end
       end
-      context '5 yen' do
-        it 'returns money' do
-          expect(machine.insert 5).to eq 5
-        end
-        it 'does not increment total' do
-          expect{machine.insert 5}.not_to change{machine.total}.from(0)
-        end
+      it_should_behave_like 'unavailable money' do
+        let(:money) { 1 }
       end
-      context '5000 yen' do
-        it 'returns money' do
-          expect(machine.insert 5000).to eq 5000
-        end
-        it 'does not increment total' do
-          expect{machine.insert 5000}.not_to change{machine.total}.from(0)
-        end
+      it_should_behave_like 'unavailable money' do
+        let(:money) { 5 }
+      end
+      it_should_behave_like 'unavailable money' do
+        let(:money) { 2000 }
+      end
+      it_should_behave_like 'unavailable money' do
+        let(:money) { 5000 }
+      end
+      it_should_behave_like 'unavailable money' do
+        let(:money) { 10000 }
+      end
+      it_should_behave_like 'unavailable money' do
+        let(:money) { 2000 }
       end
     end
   end
