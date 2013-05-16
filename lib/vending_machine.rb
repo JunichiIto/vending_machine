@@ -20,6 +20,13 @@ class VendingMachine
     total.tap { @total = 0 }
   end
 
+  def store(drink)
+    nil.tap do
+      @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
+      @drink_table[drink.name][:drinks] << drink
+    end
+  end
+
   def purchase(drink_name)
     if purchasable? drink_name
       drink = @drink_table[drink_name][:drinks].pop
@@ -35,13 +42,6 @@ class VendingMachine
 
   def purchasable_drink_names
     @drink_table.select{|_, info| info[:price] <= total && info[:drinks].any? }.keys
-  end
-
-  def store(drink)
-    nil.tap do
-      @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
-      @drink_table[drink.name][:drinks] << drink
-    end
   end
 
   def stock_info
