@@ -1,5 +1,4 @@
-require 'rspec'
-require './lib/vending_machine'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe VendingMachine do
   def insert amount_of_money
