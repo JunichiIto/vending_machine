@@ -200,6 +200,9 @@ describe VendingMachine do
     it 'can store drink' do
       expect{machine.store Drink.redbull}.to change{machine.stock_info[:redbull]}.from(nil)
     end
+    it 'returns nil' do
+      expect(machine.store Drink.redbull).to be_nil
+    end
   end
   describe '#purchasable_drink_names' do
     before do

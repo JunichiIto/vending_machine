@@ -40,6 +40,7 @@ class VendingMachine
   def store(drink)
     @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
     @drink_table[drink.name][:drinks] << drink
+    nil
   end
 
   def purchasable_drink_names
