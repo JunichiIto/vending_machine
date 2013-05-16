@@ -35,6 +35,7 @@ $ irb
 > machine.purchase :redbull # => [<Drink: name=redbull, price=200>, 50]
 > machine.total # => 0
 > machine.refund # => 0
+> machine.stock_info # => {:cola=>{:price=>120, :stock=>5}, :redbull=>{:price=>200, :stock=>0}, :water=>{:price=>100, :stock=>1}}
 > exit
 ````
 
