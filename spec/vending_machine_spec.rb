@@ -189,13 +189,13 @@ describe VendingMachine do
         expect(machine.purchase :cola).to be_nil
       end
       it 'keeps change' do
-        expect{machine.purchase :cola}.not_to change{machine.total}
+        expect{machine.purchase :cola}.not_to change{machine.total}.from(110)
       end
       it 'does not increase sale_amount' do
-        expect{machine.purchase :cola}.not_to change{machine.sale_amount}
+        expect{machine.purchase :cola}.not_to change{machine.sale_amount}.from(0)
       end
       it 'does not reduce stock' do
-        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola][:stock]}
+        expect{machine.purchase :cola}.not_to change{machine.stock_info[:cola][:stock]}.from(5)
       end
     end
   end
