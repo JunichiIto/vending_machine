@@ -25,26 +25,26 @@ class VendingMachine
   end
 
   def purchase(drink_name)
-    if purchasable? drink_name
-      drink = @drink_table[drink_name][:drinks].pop
-      @sale_amount += drink.price
-      @total -= drink.price
-      [drink, refund]
-    end
+    return unless purchasable? drink_name
+
+    drink = @drink_table[drink_name][:drinks].pop
+    @sale_amount += drink.price
+    @total -= drink.price
+    [drink, refund]
   end
 
   def purchasable?(drink_name)
     purchasable_drink_names.include? drink_name
   end
 
+  def purchasable_drink_names
+    @drink_table.select{|_, info| info[:price] <= total && info[:drinks].any? }.keys
+  end
+
   def store(drink)
     @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
     @drink_table[drink.name][:drinks] << drink
     nil
-  end
-
-  def purchasable_drink_names
-    @drink_table.select{|_, info| info[:price] <= total && info[:drinks].any? }.keys
   end
 
   def stock_info
