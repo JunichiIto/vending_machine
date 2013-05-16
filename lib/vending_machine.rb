@@ -1,4 +1,4 @@
-require './lib/drink'
+require File.expand_path(File.dirname(__FILE__) + '/drink')
 
 class VendingMachine
   AVAILABLE_MONEY = [10, 50, 100, 500, 1000]
