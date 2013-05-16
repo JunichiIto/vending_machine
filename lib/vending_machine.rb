@@ -38,9 +38,7 @@ class VendingMachine
   end
 
   def store(drink)
-    unless @drink_table.has_key? drink.name
-      @drink_table[drink.name] = { price: drink.price, drinks: [] }
-    end
+    @drink_table[drink.name] = { price: drink.price, drinks: [] } unless @drink_table.has_key? drink.name
     @drink_table[drink.name][:drinks] << drink
   end
 
@@ -49,10 +47,6 @@ class VendingMachine
   end
 
   def stock_info
-    @drink_table.inject({}) do |hash, array|
-      name, info = array
-      hash[name] = { price: info[:price], stock: info[:drinks].size }
-      hash
-    end
+    Hash[@drink_table.map {|name, info| [name, { price: info[:price], stock: info[:drinks].size }] }]
   end
 end
