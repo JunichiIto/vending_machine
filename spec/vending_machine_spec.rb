@@ -84,9 +84,7 @@ describe VendingMachine do
       machine.insert 10
       machine.insert 50
     end
-    it 'returns sum of inserted money' do
-      expect(machine.total).to eq 60
-    end
+    it { should eq 60 }
   end
   describe '#refund' do
     before do
