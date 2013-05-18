@@ -15,10 +15,10 @@ $ irb
 > machine.store Drink.redbull
 > machine.store Drink.water
 > machine.stock_info # => {:cola=>{:price=>120, :stock=>5}, :redbull=>{:price=>200, :stock=>1}, :water=>{:price=>100, :stock=>1}}
-> machine.insert 10
-> machine.insert 50
 > machine.insert 1 # => 1 (Not available)
 > machine.insert 5 # => 5 (Not available)
+> machine.insert 10 # => nil (OK)
+> machine.insert 50 # => nil (OK)
 > machine.total # => 60
 > machine.refund # => 60
 > machine.total # => 0
